@@ -11,7 +11,14 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.example.pertemuan9.R
+import com.example.pertemuan9.view.DestinasiEntry
+import com.example.pertemuan9.view.DestinasiHome
+import com.example.pertemuan9.view.EntrySiswaScreen
+import com.example.pertemuan9.view.HomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,4 +44,25 @@ fun SiswaTopAppBar(
             }
         }
     )
+}
+
+@Composable
+fun HostNavigasi(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavHost(
+        navController = navController,
+        startDestination = DestinasiHome.route,
+        modifier = modifier
+    ) {
+        composable(DestinasiHome.route) {
+            HomeScreen(
+                navigateToItemEntry = { navController.navigate(DestinasiEntry.route) }
+            )
+        }
+        composable(DestinasiEntry.route) {
+            EntrySiswaScreen(navigateBack = { navController.popBackStack() })
+        }
+    }
 }
