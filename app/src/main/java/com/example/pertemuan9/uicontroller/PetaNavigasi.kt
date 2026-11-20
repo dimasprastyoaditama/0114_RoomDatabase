@@ -32,7 +32,6 @@ fun HostNavigasi(
         composable(DestinasiHome.route) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
-                //edit 1 : tambahkan parameter navigateToItemUpdate
                 navigateToItemUpdate = {
                     navController.navigate("${DestinasiDetailSiswa.route}/${it}")
                 }
@@ -41,7 +40,6 @@ fun HostNavigasi(
         composable(DestinasiEntry.route) {
             EntrySiswaScreen(navigateBack = { navController.popBackStack() })
         }
-        //edit 2 : tambahkan 2 composable route
         composable(
             route = DestinasiDetailSiswa.routeWithArgs,
             arguments = listOf(navArgument(DestinasiDetailSiswa.itemIdArg) {
