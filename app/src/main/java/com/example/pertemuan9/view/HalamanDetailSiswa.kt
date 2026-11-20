@@ -1,5 +1,6 @@
 package com.example.pertemuan9.view
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -60,10 +61,10 @@ fun DetailSiswaScreen(
             )
         },
         floatingActionButton = {
-            val uiState = viewModel.uiDetailState.collectAsState()
+            val uiState by viewModel.uiDetailState.collectAsState()
             FloatingActionButton(
                 onClick = {
-                    navigateToEditItem(uiState.value.detailSiswa.id)
+                    navigateToEditItem(uiState.detailSiswa.id)
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
@@ -76,14 +77,18 @@ fun DetailSiswaScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        val uiState = viewModel.uiDetailState.collectAsState()
+        val uiState by viewModel.uiDetailState.collectAsState()
         val coroutineScope = rememberCoroutineScope()
         BodyDetailDataSiswa(
-            detailSiswaUiState = uiState.value,
+            detailSiswaUiState = uiState,
             onDelete = {
                 coroutineScope.launch {
-                    viewModel.deleteSiswa()
-                    navigateBack()
+                    try {
+                        navigateBack()
+                        viewModel.deleteSiswa()
+                    } catch (e: Exception) {
+                        Log.e("DetailSiswaScreen", "Gagal menghapus data siswa", e)
+                    }
                 }
             },
             modifier = Modifier
